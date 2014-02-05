@@ -7,7 +7,6 @@
   (c-set-offset 'case-label '+))
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 
-
 ;; Erlang
 (setq load-path (cons "/usr/lib/erlang/lib/tools-2.6.7/emacs" load-path))
 (setq erlang-root-dir "/usr/lib/erlang")
@@ -47,6 +46,7 @@
 (require 'whitespace)
 (setq whitespace-style '(face empty lines-tail trailing newline))
 (global-whitespace-mode t)
+(add-hook 'c-mode-hook (lambda () (whitespace-mode 1)))
 
 ;; -------------------- Backups -------------------------------
 
@@ -75,6 +75,7 @@
 (add-hook 'text-mode-hook (function (lambda nil (abbrev-mode 1))))
 (add-hook 'js-mode-hook (function (lambda nil (abbrev-mode 1))))
 (add-hook 'ruby-mode-hook (function (lambda nil (abbrev-mode 1))))
+(add-hook 'fundamental-mode-hook (function (lambda nil (abbrev-mode 1))))
 
 ;; -------------------- Compilation -------------------------------
 
