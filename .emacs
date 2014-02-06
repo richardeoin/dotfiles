@@ -47,15 +47,14 @@
 (setq whitespace-style '(face empty lines-tail trailing newline))
 (global-whitespace-mode t)
 (add-hook 'c-mode-hook (lambda () (whitespace-mode 1)))
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; -------------------- Backups -------------------------------
 
-(setq backup-directory-alist `(("." . "~/.saves")))
-(setq backup-by-copying t)
-(setq delete-old-versions t
-  kept-new-versions 6
-  kept-old-versions 2
-  version-control t)
+(setq backup-directory-alist
+      `((".*" . "~/.saves")))
+(setq auto-save-file-name-transforms
+      `((".*" "~/.saves" t)))
 
 ;; -------------------- License Text -------------------------------
 
@@ -113,10 +112,10 @@
   (local-set-key "\t" 'indent-or-expand))
 
 ;; Hook the company tabbing onto minor modes
-(add-hook 'c-mode-hook	'company-tabbing)
-(add-hook 'js-mode-hook	'company-tabbing)
-(add-hook 'ruby-mode-hook	'company-tabbing)
-(add-hook 'markdown-mode-hook	'company-tabbing)
+(add-hook 'c-mode-hook  'company-tabbing)
+(add-hook 'js-mode-hook 'company-tabbing)
+(add-hook 'ruby-mode-hook       'company-tabbing)
+(add-hook 'markdown-mode-hook   'company-tabbing)
 
 ;; Some extra keybindings for when company is active
 (define-key company-active-map (kbd "\C-n") 'company-select-next)
@@ -125,14 +124,14 @@
 ;; -------------------- Custom Variables -------------------------------
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(safe-local-variable-values (quote ((gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=gdbscript") (eval setq default-directory (locate-dominating-file buffer-file-name ".dir-locals.el")) (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=.gdbscript")))))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
