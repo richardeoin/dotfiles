@@ -60,12 +60,12 @@ CDR of each item is a filename of the license template")
         (concat (file-name-as-directory license-directory) (cdr tp))
       tp)))
 
-(defvar license-keywords-alist '(("@author@" . user-full-name)
+(defvar license-keywords-alist '(("@author@" . "Richard Meadows")
                                  ("@email@" . "hello")
                                  ("@year@" . (lambda ()
                                                (substring (current-time-string)
                                                           -4)))
-                                 ("@organization@" . 
+                                 ("@organization@" .
                                   (lambda ()
                                     (getenv "ORGANIZATION"))))
   "Keywords that need to be substituted by `license-substitute-keywords'.
@@ -77,7 +77,7 @@ that keyword.")
 
 
 (defun license-substitute-keywords (&optional record)
-  "Substitute all occurences of keywords to their replacement and returns 
+  "Substitute all occurences of keywords to their replacement and returns
 the replacement positions in markers."
   (let (markers)
     (dolist (i license-keywords-alist)
@@ -121,7 +121,7 @@ See `license-keywords-alist' for keywords and their meaning."
       ;(set-buffer buffer)
       ;(erase-buffer)
       (insert (format "%s\n" desc))
-      (insert (format "Copyright (C) %d  %s" (nth 5 (decode-time)) auth))
+      (insert (format "Copyright (C) %d  %s" (nth 5 (decode-time)) "Richard Meadows <richardeoin>"))
       (insert "\n")
       (insert-file-contents lfile)
 
@@ -152,7 +152,7 @@ See `license-keywords-alist' for keywords and their meaning."
 
 
 (defun insert-license (&optional type)
-  "Insert a license template into the current buffer." 
+  "Insert a license template into the current buffer."
   (interactive)
   (let ((text (create-license
                (or type (intern (completing-read "Choose a license type: "
