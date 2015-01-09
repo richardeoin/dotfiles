@@ -4,17 +4,20 @@
 (setq-default indent-tabs-mode nil)
 
 ;; MELPA Package Manager
-(require 'package)
-(package-initialize)
-(add-to-list 'package-archives
-  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (package-initialize)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.milkbox.net/packages/") t))
 
 ;; Theme
-(load-theme 'solarized-light t)
+(if window-system
+    (load-theme 'solarized-light t))
 
 ;; APL
-(add-to-list 'load-path "~/emacs/gnu-apl-mode")
-(require 'gnu-apl-mode)
+(when (>= emacs-major-version 24)
+  (add-to-list 'load-path "~/emacs/gnu-apl-mode")
+  (require 'gnu-apl-mode))
 
 ;; C
 (setq c-default-style "k&r" c-basic-offset 2)
@@ -94,8 +97,8 @@ LaTeX-section-section
 LaTeX-section-label))
 
 ;; Python
-;;(add-hook 'python-mode-hook 'jedi:setup)
-;;(setq jedi:complete-on-dot t)                 ; optional
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 ;; Window naviagtion
 (global-set-key (kbd "C-x <up>") 'windmove-up)
@@ -117,14 +120,22 @@ LaTeX-section-label))
     (define-key c-mode-map [(ctrl tab)] 'complete-tag)))
 (setq tags-revert-without-query 1)
 
-;; -------------------- Backups -------------------------------
+;; Write-good mode-line
+
+(add-to-list 'load-path "writegood-mode.el")
+(require 'writegood-mode)
+(global-set-key "\C-cg" 'writegood-mode)
+(global-set-key "\C-c\C-gg" 'writegood-grade-level)
+(global-set-key "\C-c\C-ge" 'writegood-reading-ease)
+
+;; -------------------- Backups ------------------------------------------------
 
 (setq backup-directory-alist
       `((".*" . "~/.saves")))
 (setq auto-save-file-name-transforms
       `((".*" "~/.saves" t)))
 
-;; -------------------- License Text -------------------------------
+;; -------------------- License Text -------------------------------------------
 
 (load-library "xlicense.el")
 
@@ -145,7 +156,7 @@ LaTeX-section-label))
 (add-hook 'fundamental-mode-hook (function (lambda nil (abbrev-mode 1))))
 (add-hook 'python-mode-hook (function (lambda nil (abbrev-mode 1))))
 
-;; -------------------- Compilation -------------------------------
+;; -------------------- Compilation --------------------------------------------
 
 (global-set-key (kbd "C-c r") 'compile)
 (global-set-key (kbd "C-c l") 'gdb)
@@ -156,15 +167,15 @@ LaTeX-section-label))
 ;; Follow compilation output
 (setq compilation-scroll-output 'first-error)
 
-;; -------------------- GDB -------------------------------
+;; -------------------- GDB ----------------------------------------------------
 
-;; GDB Window navigation
+;; GDB Window navigation (C-c C-g ..)
 (load "gdb-select-window")
 
 ;; Always use gdb-many-windows
 (setq gdb-many-windows t)
 
-;; -------------------- Company Mode -------------------------------
+;; -------------------- Company Mode -------------------------------------------
 (autoload 'company-mode "company" nil t)
 (add-hook 'after-init-hook 'global-company-mode)
 (require 'company)
@@ -176,6 +187,7 @@ LaTeX-section-label))
        (or (bobp) (= ?w (char-syntax (char-before))))
        (or (eobp) (not (= ?w (char-syntax (char-after))))))
       (company-complete-common)
+
     (indent-according-to-mode)))
 (defun company-tabbing ()
   (local-set-key "\t" 'indent-or-expand))
@@ -191,7 +203,7 @@ LaTeX-section-label))
 (define-key company-active-map (kbd "\C-n") 'company-select-next)
 (define-key company-active-map (kbd "\C-p") 'company-select-previous)
 
-;; -------------------- Full Screen ------------------------
+;; -------------------- Full Screen --------------------------------------------
 
 ;; F11 = Full Screen
 (defun toggle-fullscreen (&optional f)
@@ -210,19 +222,27 @@ LaTeX-section-label))
 ;; Disable Menu Bar
 (menu-bar-mode -1)
 
-;; -------------------- Custom Variables -------------------------------
+;; -------------------- Locked Buffer mode -------------------------------------
+
+(global-set-key (kbd "C-c k") 'locked-buffer-mode)
+(define-minor-mode locked-buffer-mode
+  "Make the current window always display this buffer."
+  nil " locked" nil
+  (set-window-dedicated-p (selected-window) locked-buffer-mode))
+
+;; -------------------- Custom Variables ---------------------------------------
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default)))
  '(package-archives (quote (("gnu" . "http://elpa.gnu.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/"))))
- '(safe-local-variable-values (quote ((gud-gdb-command-name . "arm-none-eabi-gdb -mi") (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi") (gud-gdb-command-name . "cd ../../; arm-none-eabi-gdb") (gud-gdb-command-name . "cd ../../; arm-none-eabi-gdb --annotate=3 --command=gdbscript") (gud-gdb-command-name . "cd ../..;arm-none-eabi-gdb --annotate=3 --command=gdbscript") (gud-gdb-command-name . "cd ../;arm-none-eabi-gdb --annotate=3 --command=gdbscript") (gud-gdb-command-name . "cd .. && arm-none-eabi-gdb --annotate=3 --command=gdbscript") (gud-gdb-command-name . "cd ../.. && arm-none-eabi-gdb --annotate=3 --command=gdbscript") (eval setq default-directory (locate-dominating-file buffer-file-name "../../.dir-locals.el")) (eval setq default-directory "../") (eval setq default-directory "~/") (setq default-directory "~/") (cd "../") (gud-gdb-command-name . "> /dev/null arm-none-eabi-gdb -q -x tools/") (setq c-basic-offset 8) (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3") (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=gdbscript") (eval setq default-directory (locate-dominating-file buffer-file-name ".dir-locals.el")) (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=.gdbscript")))))
+ '(safe-local-variable-values (quote ((gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3") (eval setq default-directory (locate-dominating-file buffer-file-name ".dir-locals.el")) (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi")))))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  )
