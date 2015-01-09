@@ -91,4 +91,4 @@ alias emacs='emacs -nw'
 # except when it isn't
 alias emacs-gui='emacs'
 # make me a sandwitch
-alias yolo='sudo $(history -p \!\!)'
+alias yolo='sudo $(fc -ln -1)'
