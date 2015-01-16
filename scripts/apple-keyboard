@@ -1,0 +1,16 @@
+# Swap keys that are wrong on the external keyboard
+setxkbmap -print |
+    sed 's/\(xkb_symbols.*\)"/\1+swap(apple-keyboard)"/' |
+    xkbcomp -I$HOME/.xkb -synch - $DISPLAY
+
+# Use xinput to target a specific keyboard only:
+APPLE_KEYBOARD_ID=$(
+    xinput list |
+    grep 'Apple Internal Keyboard' |
+    sed -n 's/.*id=\([0-9]\+\).*/\1/p'
+)
+
+ And swap them back for the internal keyboard
+setxkbmap -device $APPLE_KEYBOARD_ID -print |
+    sed 's/\(xkb_symbols.*\)"/\1+swap(internal-apple-keyboard)"/' |
+    xkbcomp -I$HOME/.xkb -i $APPLE_KEYBOARD_ID -synch - $DISPLAY
