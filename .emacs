@@ -33,12 +33,12 @@
 (require 'coffee-mode)
 
 ;; DisARMster
-(setq load-path (cons "/home/richard/.emacs.d/elpa/disarmster" load-path))
+(setq load-path (cons "~/emacs/disarmster" load-path))
 (require 'disarmster)
 (global-set-key (kbd "C-c d") 'disarmster)
 
 ;; Erlang
-(setq load-path (cons "/usr/lib/erlang/lib/tools-2.6.11/emacs" load-path))
+(setq load-path (cons "/usr/lib/erlang/lib/tools-2.6.13/emacs" load-path))
 (setq erlang-root-dir "/usr/lib/erlang")
 (setq exec-path (cons "/usr/lib/erlang/bin" exec-path))
 (require 'erlang-start)
