@@ -84,8 +84,13 @@ export PATH=$PATH:~/scripts
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Reload this
+alias reload=". ~/.zshrc && echo 'ZSH config reloaded from ~/.zshrc'"
+alias zshrc="emacs ~/.zshrc && reload"
+
 # install things
 alias ai='sudo apt-get install'
+alias au='sudo apt-get update'
 # emacs on the command line is always.. emacs on the command line
 alias emacs='emacs -nw'
 # except when it isn't
