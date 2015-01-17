@@ -203,6 +203,28 @@ LaTeX-section-label))
 (define-key company-active-map (kbd "\C-n") 'company-select-next)
 (define-key company-active-map (kbd "\C-p") 'company-select-previous)
 
+
+;; -------------------- Irony --------------------------------------------------
+
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's function
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+;; Company-irony
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+
 ;; -------------------- Full Screen --------------------------------------------
 
 ;; F11 = Full Screen
@@ -233,16 +255,16 @@ LaTeX-section-label))
 ;; -------------------- Custom Variables ---------------------------------------
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default)))
  '(package-archives (quote (("gnu" . "http://elpa.gnu.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/"))))
- '(safe-local-variable-values (quote ((gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3") (eval setq default-directory (locate-dominating-file buffer-file-name ".dir-locals.el")) (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi")))))
+ '(safe-local-variable-values (quote ((gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=gdbscript") (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3") (eval setq default-directory (locate-dominating-file buffer-file-name ".dir-locals.el")) (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi")))))
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
