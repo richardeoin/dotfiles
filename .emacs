@@ -67,36 +67,39 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;; LaTeX
-(require 'tex-site)
-(autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
-(autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
-(autoload 'reftex-citation "reftex-cite" "Make citation" nil)
-(autoload 'reftex-index-phrase-mode "reftex-index" "Phrase Mode" t)
-(add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
-;; (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(when (>= emacs-major-version 24)
+  (require 'tex-site)
+  (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
+  (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
+  (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
+  (autoload 'reftex-index-phrase-mode "reftex-index" "Phrase Mode" t)
+  (add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
+  ;; (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 
-(setq LaTeX-eqnarray-label "eq"
-LaTeX-equation-label "eq"
-LaTeX-figure-label "fig"
-LaTeX-table-label "tab"
-LaTeX-myChapter-label "chap"
-TeX-auto-save t
-TeX-newline-function 'reindent-then-newline-and-indent
-TeX-parse-self t
-TeX-style-path
-'("style/" "auto/"
-"/usr/share/emacs21/site-lisp/auctex/style/"
-"/var/lib/auctex/emacs21/"
-"/usr/local/share/emacs/site-lisp/auctex/style/")
-LaTeX-section-hook
-'(LaTeX-section-heading
-LaTeX-section-title
-LaTeX-section-toc
-LaTeX-section-section
-LaTeX-section-label))
+  (setq LaTeX-eqnarray-label "eq"
+        LaTeX-equation-label "eq"
+        LaTeX-figure-label "fig"
+        LaTeX-table-label "tab"
+        LaTeX-myChapter-label "chap"
+        TeX-auto-save t
+        TeX-newline-function 'reindent-then-newline-and-indent
+        TeX-parse-self t
+        TeX-style-path
+        '("style/" "auto/"
+          "/usr/share/emacs21/site-lisp/auctex/style/"
+          "/var/lib/auctex/emacs21/"
+          "/usr/local/share/emacs/site-lisp/auctex/style/")
+        LaTeX-section-hook
+        '(LaTeX-section-heading
+          LaTeX-section-title
+          LaTeX-section-toc
+          LaTeX-section-section
+          LaTeX-section-label))
+  )
 
 ;; Python
+(setq python-indent 4)
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
@@ -116,8 +119,8 @@ LaTeX-section-label))
 
 ;; Tags
 (add-hook 'c-mode-common-hook
-  (lambda ()
-    (define-key c-mode-map [(ctrl tab)] 'complete-tag)))
+          (lambda ()
+            (define-key c-mode-map [(ctrl tab)] 'complete-tag)))
 (setq tags-revert-without-query 1)
 
 ;; Write-good mode-line
@@ -197,7 +200,7 @@ LaTeX-section-label))
 (add-hook 'js-mode-hook 'company-tabbing)
 (add-hook 'ruby-mode-hook       'company-tabbing)
 (add-hook 'markdown-mode-hook   'company-tabbing)
-;(add-hook 'python-mode-hook     'company-tabbing)
+                                        ;(add-hook 'python-mode-hook     'company-tabbing)
 
 ;; Some extra keybindings for when company is active
 (define-key company-active-map (kbd "\C-n") 'company-select-next)
@@ -232,10 +235,10 @@ LaTeX-section-label))
   (interactive)
   (let ((current-value (frame-parameter nil 'fullscreen)))
     (set-frame-parameter nil 'fullscreen
-      (if (equal 'fullboth current-value)
-        (if (boundp 'old-fullscreen) old-fullscreen nil)
-        (progn (setq old-fullscreen current-value)
-          'fullboth)))))
+                         (if (equal 'fullboth current-value)
+                             (if (boundp 'old-fullscreen) old-fullscreen nil)
+                           (progn (setq old-fullscreen current-value)
+                                  'fullboth)))))
 (global-set-key [f11] 'toggle-fullscreen)
 
 ;; Disable tool-bar
