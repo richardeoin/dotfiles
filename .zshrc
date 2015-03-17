@@ -97,5 +97,7 @@ alias au='sudo apt-get update'
 alias emacs='emacs -nw'
 # except when it isn't
 alias emacs-gui='emacs'
+# git
+alias clone='git clone'
 # make me a sandwitch
 alias yolo='sudo $(fc -ln -1)'
