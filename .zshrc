@@ -101,3 +101,6 @@ alias emacs-gui='emacs'
 alias clone='git clone'
 # make me a sandwitch
 alias yolo='sudo $(fc -ln -1)'
+
+#udev
+alias udev-reload='sudo udevadm control --reload-rules && udevadm trigger'
