@@ -7,6 +7,10 @@ export ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 ZSH_THEME="bullet-train"
 
+# Display context when user is not richard
+BULLETTRAIN_CONTEXT_SHOW=true
+DEFAULT_USER=richard
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 

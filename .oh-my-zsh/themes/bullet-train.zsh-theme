@@ -384,12 +384,12 @@ prompt_char() {
 
 build_prompt() {
   RETVAL=$?
-  # prompt_status
+  prompt_status
   prompt_time
   prompt_rvm
   prompt_virtualenv
   prompt_nvm
-  # prompt_context
+  prompt_context
   prompt_dir
   prompt_git
   # prompt_hg
