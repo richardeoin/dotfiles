@@ -28,3 +28,6 @@ export PATH="$PATH:$HOME/.multirust/toolchains/stable/cargo/bin" # Add rust tool
 export PATH="$PATH:$HOME/.multirust/toolchains/nightly/cargo/bin" # Add rust tool to bin
 
 export RUST_SRC_PATH="$HOME/.rust/src"
+
+# History size
+export HISTSIZE="INFINITE"
