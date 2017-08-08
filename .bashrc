@@ -25,3 +25,9 @@ export TERM="xterm-256color"
 
 # Custom Commands
 alias yolo='sudo $(history -p \!\!)'
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+export PATH="$PATH:$HOME/.multirust/toolchains/stable/cargo/bin" # Add rust tool to bin
+export PATH="$PATH:$HOME/.multirust/toolchains/nightly/cargo/bin" # Add rust tool to bin
+
+export RUST_SRC_PATH="$HOME/.rust/src"
