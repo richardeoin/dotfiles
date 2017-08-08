@@ -103,7 +103,7 @@ alias emacs='emacs -nw'
 alias emacs-gui='emacs'
 # git
 alias clone='git clone'
-# make me a sandwitch
+# make me a sandwich
 alias yolo='sudo $(fc -ln -1)'
 
 #udev

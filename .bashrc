@@ -1,12 +1,9 @@
 # Prompt
-export PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\t \[\033[01;35m\]^\[\033[0;31m\]-\[\033[01;35m\]^\[\033[01;34m\] \w \[\033[0;31m\]#\# \[\033[01;34m\]\$\[\033[00m\] "
+#export PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\t \[\033[01;35m\]^\[\033[0;31m\]-\[\033[01;35m\]^\[\033[01;34m\] \w \[\033[0;31m\]#\# \[\033[01;34m\]\$\[\033[00m\] "
 
 # $PATH
 ## Scripts
 export PATH=$PATH:~/scripts
-
-# Default Folder
-cd /richard/
 
 # Alias to multiple ls commands
 alias la='ls -Al'               # show hidden files
