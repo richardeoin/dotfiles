@@ -24,10 +24,13 @@ export TERM="xterm-256color"
 alias yolo='sudo $(history -p \!\!)'
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export PATH="$PATH:$HOME/.multirust/toolchains/stable/cargo/bin" # Add rust tool to bin
-export PATH="$PATH:$HOME/.multirust/toolchains/nightly/cargo/bin" # Add rust tool to bin
 
+# Rust
+source $HOME/.cargo/env
 export RUST_SRC_PATH="$HOME/.rust/src"
 
 # History size
 export HISTSIZE="INFINITE"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

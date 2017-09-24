@@ -110,10 +110,14 @@ alias yolo='sudo $(fc -ln -1)'
 alias udev-reload='sudo udevadm control --reload-rules && udevadm trigger'
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export PATH="$PATH:$HOME/.multirust/toolchains/stable/cargo/bin" # Add rust tool to bin
 
+# Rust
+source $HOME/.cargo/env
 export RUST_SRC_PATH="$HOME/.rust/src"
 
 alias awrde='env WINEPREFIX="/home/richard/.wine" wine C:\\Program\ Files\ \(x86\)\\AWR\\AWRDE\\11\\MWOffice.exe -f\ \"MWO-228,\ VSS-350,\ ACE-100,\ ANA-001,\ APL-100,\ APL-110,\ APL-150,\ RDR-100,\ XEM-001\"'
 alias awrde_help='env WINEPREFIX="/home/richard/.wine" wine C:\\windows\\command\\start.exe /Unix /home/richard/.wine/dosdevices/c:/users/richard/Start\ Menu/Programs/AWRDE\ 11\ \(64bit\)/AWR\ Design\ Environment\ Help.lnk'
 alias awrde_gettingstarted='env WINEPREFIX="/home/richard/.wine" wine C:\\windows\\command\\start.exe /Unix /home/richard/.wine/dosdevices/c:/users/richard/Start\ Menu/Programs/AWRDE\ 11\ \(64bit\)/Getting\ Started.lnk'
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

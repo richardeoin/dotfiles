@@ -1,14 +1,14 @@
 ;; General Load Path for my stuff
-(setq load-path (cons "/home/richard/emacs" load-path))
+(add-to-list 'load-path "~/emacs")
 
 (setq-default indent-tabs-mode nil)
 
 ;; MELPA Package Manager
 (when (>= emacs-major-version 24)
   (require 'package)
-  (package-initialize)
   (add-to-list 'package-archives
-               '("melpa" . "http://melpa.milkbox.net/packages/") t))
+               '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (package-initialize))
 
 ;; Theme
 (if window-system
@@ -103,6 +103,18 @@
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
+;; Rust
+;; Set path to rust src directory
+(setq racer-rust-src-path "~/.rust/src/")
+
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'eldoc-mode)
+
+;; VHDL Mode
+(setq load-path (cons (expand-file-name "~/.emacs.d/vhdl-mode-3.38.1/") load-path))
+(autoload 'vhdl-mode "vhdl-mode" "VHDL Mode" t)
+(setq auto-mode-alist (cons '("\\.vhdl?\\'" . vhdl-mode) auto-mode-alist))
+
 ;; Window naviagtion
 (global-set-key (kbd "C-x <up>") 'windmove-up)
 (global-set-key (kbd "C-x <down>") 'windmove-down)
@@ -110,9 +122,12 @@
 (global-set-key (kbd "C-x <left>") 'windmove-left)
 (setq windmove-wrap-around t)
 
+;; query-replace-regexp
+(global-set-key "\M-%" 'query-replace-regexp)
+
 ;; Whitespace
 (require 'whitespace)
-(setq whitespace-style '(face empty lines-tail trailing newline))
+(setq whitespace-style '(face empty trailing newline lines-tail))
 (global-whitespace-mode t)
 (add-hook 'c-mode-hook (lambda () (whitespace-mode 1)))
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -158,6 +173,7 @@
 (add-hook 'ruby-mode-hook (function (lambda nil (abbrev-mode 1))))
 (add-hook 'fundamental-mode-hook (function (lambda nil (abbrev-mode 1))))
 (add-hook 'python-mode-hook (function (lambda nil (abbrev-mode 1))))
+(add-hook 'rust-mode-hook (function (lambda nil (abbrev-mode 1))))
 
 ;; -------------------- Compilation --------------------------------------------
 
@@ -171,6 +187,8 @@
 (setq compilation-scroll-output 'first-error)
 
 ;; -------------------- GDB ----------------------------------------------------
+
+(require 'gdb-ui)
 
 ;; GDB Window navigation (C-c C-g ..)
 (load "gdb-select-window")
@@ -197,14 +215,17 @@
 
 ;; Hook the company tabbing onto minor modes
 (add-hook 'c-mode-hook  'company-tabbing)
-(add-hook 'js-mode-hook 'company-tabbing)
-(add-hook 'ruby-mode-hook       'company-tabbing)
-(add-hook 'markdown-mode-hook   'company-tabbing)
-                                        ;(add-hook 'python-mode-hook     'company-tabbing)
+;(add-hook 'js-mode-hook 'company-tabbing)
+;(add-hook 'ruby-mode-hook       'company-tabbing)
+;(add-hook 'markdown-mode-hook   'company-tabbing)
+
+(add-hook 'racer-mode-hook #'company-tabbing)
 
 ;; Some extra keybindings for when company is active
 (define-key company-active-map (kbd "\C-n") 'company-select-next)
 (define-key company-active-map (kbd "\C-p") 'company-select-previous)
+
+(setq company-tooltip-align-annotations t)
 
 
 ;; -------------------- Irony --------------------------------------------------
@@ -264,10 +285,13 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default)))
  '(package-archives (quote (("gnu" . "http://elpa.gnu.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/"))))
- '(safe-local-variable-values (quote ((gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=gdbscript") (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3") (eval setq default-directory (locate-dominating-file buffer-file-name ".dir-locals.el")) (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi")))))
+ '(safe-local-variable-values (quote ((eval highlight-regexp "^ *") (setq-default c-basic-offset 4 tab-width 4 indent-tabs-mode t) (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=.gdbscript") (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=gdbscript") (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3") (eval setq default-directory (locate-dominating-file buffer-file-name ".dir-locals.el")) (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi"))))
+ '(tab-width 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
