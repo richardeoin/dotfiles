@@ -56,6 +56,9 @@ plugins=(git zshmarks)
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/richard/scripts:/home/richard/scripts"
 # export MANPATH="/usr/local/man:$MANPATH"
 
+# oh my zsh should never annoying prompt
+DISABLE_AUTO_UPDATE="true"
+
 source $ZSH/oh-my-zsh.sh
 
 source ~/scripts/z/z.sh
