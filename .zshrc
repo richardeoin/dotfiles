@@ -83,6 +83,7 @@ source ~/scripts/z/z.sh
 export PATH=$PATH:~/scripts
 # richard
 export CDPATH=$CDPATH:/richard
+export CDPATH=$CDPATH:~/Documents
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
