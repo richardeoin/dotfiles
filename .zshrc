@@ -97,6 +97,8 @@ export CDPATH=$CDPATH:/richard
 alias reload=". ~/.zshrc && echo 'ZSH config reloaded from ~/.zshrc'"
 alias zshrc="emacs ~/.zshrc && reload"
 
+# tmux
+alias ta='tmux attach'
 # install things
 alias ai='sudo apt-get install'
 alias au='sudo apt-get update'

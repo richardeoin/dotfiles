@@ -15,7 +15,9 @@ alias lr='ls -lR'               # recursive ls
 alias lt='ls -ltr'              # sort by date
 alias lm='ls -al |more'         # pipe through 'more'
 
-# Alist for apt
+# tmux
+alias ta='tmux attach'
+# alias for apt
 alias ai='sudo apt-get install'	# Install things
 
 export TERM="xterm-256color"
