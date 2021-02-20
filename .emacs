@@ -12,7 +12,7 @@
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list 'package-archives
-               '("melpa" . "http://melpa.milkbox.net/packages/") t)
+               '("melpa" . "https://melpa.org/packages/") t)
   (package-initialize))
 
 ;; Theme
@@ -201,7 +201,7 @@
 
 ;; -------------------- GDB ----------------------------------------------------
 
-(require 'gdb-ui)
+(require 'gdb-mi)
 
 ;; GDB Window navigation (C-c C-g ..)
 (load "gdb-select-window")
@@ -296,9 +296,22 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default)))
- '(package-archives (quote (("gnu" . "http://elpa.gnu.org/packages/") ("melpa" . "http://melpa.milkbox.net/packages/"))))
- '(safe-local-variable-values (quote ((eval highlight-regexp "^ *") (setq-default c-basic-offset 4 tab-width 4 indent-tabs-mode t) (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=.gdbscript") (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=gdbscript") (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3") (eval setq default-directory (locate-dominating-file buffer-file-name ".dir-locals.el")) (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi"))))
+ '(custom-safe-themes
+   (quote
+    ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default)))
+ '(package-archives (quote (("gnu" . "http://elpa.gnu.org/packages/"))))
+ '(package-selected-packages
+   (quote
+    (browse-kill-ring python-black lsp-mode gnu-elpa-keyring-update blacken visual-regexp yaml-mode company racer cargo rust-mode string-inflection magit)))
+ '(safe-local-variable-values
+   (quote
+    ((eval highlight-regexp "^ *")
+     (setq-default c-basic-offset 4 tab-width 4 indent-tabs-mode t)
+     (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=.gdbscript")
+     (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3")
+     (eval setq default-directory
+           (locate-dominating-file buffer-file-name ".dir-locals.el"))
+     (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi"))))
  '(tab-width 4))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
