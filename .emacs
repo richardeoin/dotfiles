@@ -1,7 +1,12 @@
 ;; General Load Path for my stuff
 (add-to-list 'load-path "~/emacs")
 
+(setq-default fill-column 80) ;; 80 character width
 (setq-default indent-tabs-mode nil)
+
+;; Preserve tall windows
+(setq split-height-threshold 250)
+(setq split-width-threshold 150)
 
 ;; MELPA Package Manager
 (when (>= emacs-major-version 24)
