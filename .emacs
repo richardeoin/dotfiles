@@ -117,6 +117,11 @@
 ;; Python
 (setq python-indent 4)
 (add-hook 'python-mode-hook 'jedi:setup)
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'blacken-buffer)
+          ))
 (setq jedi:complete-on-dot t)
 
 ;; Rust
