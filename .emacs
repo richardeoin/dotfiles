@@ -124,12 +124,48 @@
           ))
 (setq jedi:complete-on-dot t)
 
-;; Rust
-;; Set path to rust src directory
-(setq racer-rust-src-path "~/.rust/src/")
+;; LSP
+(use-package lsp-mode)
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
-(add-hook 'rust-mode-hook #'racer-mode)
-(add-hook 'racer-mode-hook #'eldoc-mode)
+;; Rust
+(use-package rust-mode
+  :mode "\\.rs\\'"
+  :init
+  :hook (rust-mode . lsp))
+
+
+(setq rust-format-on-save t)
+
+;; keybindings for interacting with Cargo
+(use-package cargo
+  :hook (rust-mode . cargo-minor-mode))
+
+;; (add-hook 'before-save-hook (lambda () (when (eq 'rust-mode major-mode)
+;;                                          (r))))
+
+;; String Inflection
+(require 'string-inflection)
+
+(global-set-key (kbd "C-c u") 'string-inflection-underscore)
+(global-set-key (kbd "C-c L") 'my-string-inflection-cycle-auto)
+
+(defun my-string-inflection-cycle-auto ()
+  "switching by major-mode"
+  (interactive)
+  (cond
+   ;; for emacs-lisp-mode
+   ((eq major-mode 'emacs-lisp-mode)
+    (string-inflection-all-cycle))
+   ;; for python
+   ((eq major-mode 'python-mode)
+    (string-inflection-python-style-cycle))
+   (t
+    ;; default
+    (string-inflection-all-cycle))))
+
+
 
 ;; VHDL Mode
 (setq load-path (cons (expand-file-name "~/.emacs.d/vhdl-mode-3.38.1/") load-path))
@@ -257,18 +293,13 @@
 
 ;; Hook the company tabbing onto minor modes
 (add-hook 'c-mode-hook  'company-tabbing)
-;(add-hook 'js-mode-hook 'company-tabbing)
-;(add-hook 'ruby-mode-hook       'company-tabbing)
-;(add-hook 'markdown-mode-hook   'company-tabbing)
-
-(add-hook 'racer-mode-hook #'company-tabbing)
+(add-hook 'rust-mode-hook  'company-tabbing)
 
 ;; Some extra keybindings for when company is active
 (define-key company-active-map (kbd "\C-n") 'company-select-next)
 (define-key company-active-map (kbd "\C-p") 'company-select-previous)
 
 (setq company-tooltip-align-annotations t)
-
 
 ;; -------------------- Irony --------------------------------------------------
 
