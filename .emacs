@@ -47,7 +47,7 @@
 (global-set-key (kbd "C-c d") 'disarmster)
 
 ;; Erlang
-(setq load-path (cons "/usr/lib/erlang/lib/tools-2.6.13/emacs" load-path))
+(setq load-path (cons "/usr/lib/erlang/lib/tools-2.11.1/emacs" load-path))
 (setq erlang-root-dir "/usr/lib/erlang")
 (setq exec-path (cons "/usr/lib/erlang/bin" exec-path))
 (require 'erlang-start)
