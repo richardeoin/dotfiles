@@ -55,8 +55,7 @@ plugins=(git zshmarks)
 
 # User configuration
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/richard/scripts:/home/richard/scripts"
-# export MANPATH="/usr/local/man:$MANPATH"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/richard/.local/bin:/home/richard/scripts:/home/richard/scripts:/opt/kicad-tools/bin:/opt/gcc-arm-none-eabi/bin:/opt/nextpnr/bin"
 
 # oh my zsh should never annoying prompt
 DISABLE_AUTO_UPDATE="true"
@@ -121,7 +120,7 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 # Rust
 source $HOME/.cargo/env
-export RUST_SRC_PATH="$HOME/.rust/src"
+export RUST_SRC_PATH="$(rustc --print sysroot)/lib/rustlib/src/rust/src"
 
 alias awrde='env WINEPREFIX="/home/richard/.wine" wine C:\\Program\ Files\ \(x86\)\\AWR\\AWRDE\\11\\MWOffice.exe -f\ \"MWO-228,\ VSS-350,\ ACE-100,\ ANA-001,\ APL-100,\ APL-110,\ APL-150,\ RDR-100,\ XEM-001\"'
 alias awrde_help='env WINEPREFIX="/home/richard/.wine" wine C:\\windows\\command\\start.exe /Unix /home/richard/.wine/dosdevices/c:/users/richard/Start\ Menu/Programs/AWRDE\ 11\ \(64bit\)/AWR\ Design\ Environment\ Help.lnk'
