@@ -15,15 +15,24 @@
     (load-theme 'solarized-light t))
 
 ;; APL
-(when (>= emacs-major-version 24)
-  (add-to-list 'load-path "~/emacs/gnu-apl-mode")
-  (require 'gnu-apl-mode))
+;; (when (>= emacs-major-version 24)
+;;   (add-to-list 'load-path "~/emacs/gnu-apl-mode")
+;;   (require 'gnu-apl-mode))
 
 ;; C
 (setq c-default-style "k&r" c-basic-offset 2)
 (defun my-c-mode-hook ()
   (c-set-offset 'case-label '+))
 (add-hook 'c-mode-hook 'my-c-mode-hook)
+
+;; (require 'clang-format)
+;; (setq clang-format-style-option "llvm")
+
+;; (require 'clang-format)
+;; (global-set-key (kbd "C-c i") 'clang-format-region)
+;; (global-set-key (kbd "C-c u") 'clang-format-buffer)
+
+;; (setq clang-format-style-option "llvm")
 
 ;; Coffeescript
 (autoload 'coffee-mode "coffee-mode"
@@ -67,36 +76,36 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;; LaTeX
-(when (>= emacs-major-version 24)
-  (require 'tex-site)
-  (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
-  (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
-  (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
-  (autoload 'reftex-index-phrase-mode "reftex-index" "Phrase Mode" t)
-  (add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
-  ;; (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;; (when (>= emacs-major-version 24)
+;;   (require 'tex-site)
+;;   (autoload 'reftex-mode "reftex" "RefTeX Minor Mode" t)
+;;   (autoload 'turn-on-reftex "reftex" "RefTeX Minor Mode" nil)
+;;   (autoload 'reftex-citation "reftex-cite" "Make citation" nil)
+;;   (autoload 'reftex-index-phrase-mode "reftex-index" "Phrase Mode" t)
+;;   (add-hook 'latex-mode-hook 'turn-on-reftex) ; with Emacs latex mode
+;;   ;; (add-hook 'reftex-load-hook 'imenu-add-menubar-index)
+;;   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 
-  (setq LaTeX-eqnarray-label "eq"
-        LaTeX-equation-label "eq"
-        LaTeX-figure-label "fig"
-        LaTeX-table-label "tab"
-        LaTeX-myChapter-label "chap"
-        TeX-auto-save t
-        TeX-newline-function 'reindent-then-newline-and-indent
-        TeX-parse-self t
-        TeX-style-path
-        '("style/" "auto/"
-          "/usr/share/emacs21/site-lisp/auctex/style/"
-          "/var/lib/auctex/emacs21/"
-          "/usr/local/share/emacs/site-lisp/auctex/style/")
-        LaTeX-section-hook
-        '(LaTeX-section-heading
-          LaTeX-section-title
-          LaTeX-section-toc
-          LaTeX-section-section
-          LaTeX-section-label))
-  )
+;;   (setq LaTeX-eqnarray-label "eq"
+;;         LaTeX-equation-label "eq"
+;;         LaTeX-figure-label "fig"
+;;         LaTeX-table-label "tab"
+;;         LaTeX-myChapter-label "chap"
+;;         TeX-auto-save t
+;;         TeX-newline-function 'reindent-then-newline-and-indent
+;;         TeX-parse-self t
+;;         TeX-style-path
+;;         '("style/" "auto/"
+;;           "/usr/share/emacs21/site-lisp/auctex/style/"
+;;           "/var/lib/auctex/emacs21/"
+;;           "/usr/local/share/emacs/site-lisp/auctex/style/")
+;;         LaTeX-section-hook
+;;         '(LaTeX-section-heading
+;;           LaTeX-section-title
+;;           LaTeX-section-toc
+;;           LaTeX-section-section
+;;           LaTeX-section-label))
+;;   )
 
 ;; Python
 (setq python-indent 4)
@@ -178,7 +187,6 @@
 ;; -------------------- Compilation --------------------------------------------
 
 (global-set-key (kbd "C-c r") 'compile)
-(global-set-key (kbd "C-c l") 'gdb)
 
 ;; Always save when files need compiling
 (setq compilation-ask-about-save nil)
