@@ -148,6 +148,18 @@
 (add-hook 'c-mode-hook (lambda () (whitespace-mode 1)))
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+(defun preserve-trailing-whitespace ()
+  (interactive)
+  (remove-hook 'before-save-hook 'delete-trailing-whitespace))
+
+(global-set-key (kbd "C-x w") 'preserve-trailing-whitespace)
+
+(defun unpreserve-trailing-whitespace ()
+  (interactive)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
+(global-set-key (kbd "C-x M-w") 'unpreserve-trailing-whitespace)
+
 ;; Tags
 (add-hook 'c-mode-common-hook
           (lambda ()
