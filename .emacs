@@ -144,7 +144,7 @@
 (setq windmove-wrap-around t)
 
 ;; query-replace-regexp
-(global-set-key "\M-%" 'query-replace-regexp)
+(global-set-key "\M-%" 'vr/query-replace)
 
 ;; revert buffers
 (defun revert-all-buffers ()
