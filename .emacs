@@ -72,6 +72,8 @@
 ;; Magit
 (require 'magit)
 (global-set-key (kbd "C-c s") 'magit-status)
+(define-key magit-file-mode-map
+  (kbd "C-c g") 'magit-file-dispatch)
 
 ;; Markdown
 (autoload 'markdown-mode "markdown-mode"
