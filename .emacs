@@ -135,15 +135,15 @@
   :init
   :hook (rust-mode . lsp))
 
-
 (setq rust-format-on-save t)
 
 ;; keybindings for interacting with Cargo
 (use-package cargo
   :hook (rust-mode . cargo-minor-mode))
 
-;; (add-hook 'before-save-hook (lambda () (when (eq 'rust-mode major-mode)
-;;                                          (r))))
+;; smerge mode
+(setq smerge-command-prefix "\C-cv")
+
 
 ;; String Inflection
 (require 'string-inflection)
@@ -164,8 +164,6 @@
    (t
     ;; default
     (string-inflection-all-cycle))))
-
-
 
 ;; VHDL Mode
 (setq load-path (cons (expand-file-name "~/.emacs.d/vhdl-mode-3.38.1/") load-path))
