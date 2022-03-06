@@ -1,6 +1,36 @@
 ;; General Load Path for my stuff
 (add-to-list 'load-path "~/emacs")
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default)))
+ '(lsp-rust-analyzer-cargo-all-targets nil)
+ '(package-selected-packages
+   (quote
+    (rustic flycheck visual-regexp use-package python-black lsp-ui lsp-mode json-mode gnu-elpa-keyring-update company browse-kill-ring blacken astyle magit string-inflection)))
+ '(safe-local-variable-values
+   (quote
+    ((eval highlight-regexp "^ *")
+     (setq-default c-basic-offset 4 tab-width 4 indent-tabs-mode t)
+     (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3")
+     (eval setq default-directory
+           (locate-dominating-file buffer-file-name ".dir-locals.el"))
+     (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi"))))
+ '(tab-width 4))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; -------------------- Setup ---------------------------------------
+
 (setq-default fill-column 80) ;; 80 character width
 (setq-default indent-tabs-mode nil)
 
@@ -8,12 +38,19 @@
 (setq split-height-threshold 250)
 (setq split-width-threshold 150)
 
-;; MELPA Package Manager
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/") t)
-  (package-initialize))
+;; use-package
+(require 'package)
+(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
+
 
 ;; Theme
 (if window-system
@@ -72,8 +109,7 @@
 ;; Magit
 (require 'magit)
 (global-set-key (kbd "C-c s") 'magit-status)
-(define-key magit-file-mode-map
-  (kbd "C-c g") 'magit-file-dispatch)
+(global-set-key (kbd "C-c g") 'magit-file-dispatch)
 
 ;; Markdown
 (autoload 'markdown-mode "markdown-mode"
@@ -125,28 +161,73 @@
 (setq jedi:complete-on-dot t)
 
 ;; LSP
-(use-package lsp-mode)
+(use-package lsp-mode
+  :hook ((rust-mode          ;
+          ) . lsp-deferred)
+  :commands lsp
+  :config
+  (setq lsp-auto-guess-root t)
+  (setq lsp-log-io nil)
+  (setq lsp-restart 'auto-restart)
+  (setq lsp-enable-symbol-highlighting nil)
+  (setq lsp-enable-on-type-formatting nil)
+  (setq lsp-signature-auto-activate nil)
+  (setq lsp-signature-render-documentation nil)
+  (setq lsp-eldoc-hook nil)
+  (setq lsp-modeline-code-actions-enable nil)
+  (setq lsp-modeline-diagnostics-enable nil)
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-semantic-tokens-enable nil)
+  (setq lsp-enable-folding nil)
+  (setq lsp-enable-imenu nil)
+  (setq lsp-enable-snippet nil)
+  (setq read-process-output-max (* 1024 1024)) ;; 1MB
+  (setq lsp-idle-delay 0.5))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-header t)
+  (lsp-ui-doc-include-signature t)
+  (lsp-ui-doc-border (face-foreground 'default))
+  (lsp-ui-sideline-show-code-actions t)
+  (lsp-ui-sideline-delay 0.05))
+
 (setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
-;; Rust
-(use-package rust-mode
-  :mode "\\.rs\\'"
-  :init
-  :hook (rust-mode . lsp))
+;; rust
+(use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("M-:" . rustic-docstring-dwim)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c t" . lsp-rust-analyzer-open-cargo-toml)
+              ("C-c C-c e" . lsp-rust-analyzer-expand-macro)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
 
-(setq rust-format-on-save t)
-
-;; keybindings for interacting with Cargo
-(use-package cargo
-  :hook (rust-mode . cargo-minor-mode))
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
 
 ;; smerge mode
 (setq smerge-command-prefix "\C-cv")
 
-
 ;; String Inflection
-(require 'string-inflection)
+(use-package string-inflection)
 
 (global-set-key (kbd "C-c u") 'string-inflection-underscore)
 (global-set-key (kbd "C-c L") 'my-string-inflection-cycle-auto)
@@ -196,6 +277,7 @@
 (global-whitespace-mode t)
 (add-hook 'c-mode-hook (lambda () (whitespace-mode 1)))
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(setq whitespace-line-column 99)
 
 (defun preserve-trailing-whitespace ()
   (interactive)
@@ -214,14 +296,6 @@
           (lambda ()
             (define-key c-mode-map [(ctrl tab)] 'complete-tag)))
 (setq tags-revert-without-query 1)
-
-;; Write-good mode-line
-
-(add-to-list 'load-path "writegood-mode.el")
-(require 'writegood-mode)
-(global-set-key "\C-cg" 'writegood-mode)
-(global-set-key "\C-c\C-gg" 'writegood-grade-level)
-(global-set-key "\C-c\C-ge" 'writegood-reading-ease)
 
 ;; -------------------- Backups ------------------------------------------------
 
@@ -372,34 +446,7 @@
 (global-set-key (kbd "C-c +") 'increment-number-decimal)
 (global-set-key (kbd "C-c -") 'decrement-number-decimal)
 
-;; -------------------- Custom Variables ---------------------------------------
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" default)))
- '(package-selected-packages
-   (quote
-    (browse-kill-ring python-black lsp-mode gnu-elpa-keyring-update blacken visual-regexp yaml-mode company racer cargo rust-mode string-inflection magit)))
- '(safe-local-variable-values
-   (quote
-    ((eval highlight-regexp "^ *")
-     (setq-default c-basic-offset 4 tab-width 4 indent-tabs-mode t)
-     (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3 --command=.gdbscript")
-     (gud-gdb-command-name . "arm-none-eabi-gdb --annotate=3")
-     (eval setq default-directory
-           (locate-dominating-file buffer-file-name ".dir-locals.el"))
-     (gud-gdb-command-name . "arm-none-eabi-gdb -i=mi"))))
- '(tab-width 4))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
